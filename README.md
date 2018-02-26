@@ -44,15 +44,18 @@ ts中通过Angular2的HTTP请求表格数据的代码如下（做了简化）：
 
 先把 this.data.push(json);这一行注释掉，然后在this.checkOverviewService.getCheckOverviewInfo()这一行的上方写死一个固定值，比如
 
-this.data.push({name:'hello'})
+     this.data.push({name:'hello'})
 
 刷新页面，数据有了！！！ 很明显：同步数据是正常的，异步数据出问题。
 
 再去查看官方文档：
 
 nz-table
+
 参数	说明	类型	默认值
+
 nzAjaxData	远程异步数据，与nzDataSource二选一	Array	[]
+
 nzDataSource	同步数据，与nzAjaxData二选一	Array	[]
 
 
@@ -70,27 +73,23 @@ nzDataSource	同步数据，与nzAjaxData二选一	Array	[]
 
 
 再仔细看下以下代码：
-  <code>
-  totalData.forEach(item => {
-                    let json = item.station;
-                    this.data.push(json);
-                });
-</code>
+ 
+    totalData.forEach(item => {
+        let json = item.station;
+        this.data.push(json);
+     });
+                
+ 
 绑定在页面上的this.data在不断变化。
 
 改成下面这样试试
 
- const list: any[] = [];
- 
-  totalData.forEach(item => {
-  
-     let json = item.station;
-                    
-     list.push(json);
-                    
-  });
-                
-  this.data = [...list];
+     const list: any[] = [];
+     totalData.forEach(item => {
+         let json = item.station;               
+         list.push(json);                 
+     });             
+    this.data = [...list];
   
   
   原来是 angular 变更检测机制引起的，数组项的变更不会触发 ngOnChanges。
