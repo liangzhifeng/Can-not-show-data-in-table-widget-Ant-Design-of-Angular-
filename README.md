@@ -70,22 +70,28 @@ nzDataSource	同步数据，与nzAjaxData二选一	Array	[]
 
 
 再仔细看下以下代码：
-  
+  <code>
   totalData.forEach(item => {
                     let json = item.station;
                     this.data.push(json);
                 });
-
+</code>
 绑定在页面上的this.data在不断变化。
 
 改成下面这样试试
 
  const list: any[] = [];
+ 
   totalData.forEach(item => {
-                    let json = item.station;
-                    list.push(json);
-                });
+  
+     let json = item.station;
+                    
+     list.push(json);
+                    
+  });
+                
   this.data = [...list];
+  
   
   原来是 angular 变更检测机制引起的，数组项的变更不会触发 ngOnChanges。
   
