@@ -29,7 +29,7 @@
 开始将不相关代码都注释掉，问题依旧存在。
 
 ts中通过Angular2的HTTP请求表格数据的代码如下（做了简化）：
-
+    ngOnInit() {
         this.checkOverviewService.getCheckOverviewInfo().subscribe((res:any) => {
             if (res.status === 200) {
                 let totalData = res.json();     
@@ -40,7 +40,8 @@ ts中通过Angular2的HTTP请求表格数据的代码如下（做了简化）：
             } else {
                 this._message.error(res.data,{nzDuration: 5000});
             }
-        });
+        });
+    }
 
 先把 this.data.push(json);这一行注释掉，然后在this.checkOverviewService.getCheckOverviewInfo()这一行的上方写死一个固定值，比如
 
@@ -80,7 +81,7 @@ nzDataSource	同步数据，与nzAjaxData二选一	Array	[]
      });
                 
  
-绑定在页面上的this.data在不断变化。
+绑定在页面上的this.data在逐渐变化，但是onInit是生命周期中的一个初始化时机，不是一直监测数据变化的ngOnChanges。
 
 改成下面这样试试
 
